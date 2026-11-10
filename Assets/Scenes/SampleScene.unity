@@ -243,7 +243,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnObjects
   ObjectPrefab: {fileID: 4176635997376947382, guid: c564edac54446134fb656e81d1be36ef, type: 3}
-  ObjectCount: 10
+  ObjectCount: 5
+  CheckRadius: 100
+  ObstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!65 &374457270
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -605,7 +609,7 @@ GameObject:
   - component: {fileID: 2113343659}
   - component: {fileID: 2113343662}
   - component: {fileID: 2113343661}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
