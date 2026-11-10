@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class InputReader : MonoBehaviour, InputSystem.IPlayerActions
 {
     public Vector2 LookInput { get; private set; }
+    public Vector2 MoveInput { get; private set; }
 
     private InputSystem _inputSystem;
 
@@ -54,7 +55,7 @@ public class InputReader : MonoBehaviour, InputSystem.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        MoveInput = context.ReadValue<Vector2>();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
