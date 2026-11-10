@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float Speed = 5f;
+    [SerializeField] private float SprintSpeed = 15f;
 
     private float xRotation = 0f;
 
@@ -51,6 +52,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 moveInput = _inputReader.MoveInput;
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
-        _cc.Move(Speed * Time.deltaTime * move);
+
+        bool isSprinting = _inputReader.SprintInput;
+        float speed = isSprinting ? SprintSpeed : Speed;
+
+        _cc.Move(speed * Time.deltaTime * move);
     }
 }
