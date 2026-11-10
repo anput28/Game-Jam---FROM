@@ -12,6 +12,7 @@ public class SpawnObjects : MonoBehaviour
     [Header("Position Valiation")]
     [SerializeField] private float CheckRadius = 100.0f;
     [SerializeField] private LayerMask ObstacleMask;
+    [SerializeField] [Range(-1, 0)] private float OffsetFromGround = -0.5f;
 
     private BoxCollider _spawnArea;
     private float _objectHalfHeight;
@@ -79,7 +80,7 @@ public class SpawnObjects : MonoBehaviour
 
         // Adjust y based on terrain and object's height  
         float terrainHeight = Terrain.activeTerrain.SampleHeight(randomPos);
-        terrainHeight += _objectHalfHeight;
+        terrainHeight += _objectHalfHeight + OffsetFromGround;
 
         return new Vector3(randomPos.x, terrainHeight, randomPos.z);
     }
