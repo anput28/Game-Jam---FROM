@@ -12,8 +12,10 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float Speed = 5f;
     [SerializeField] private float SprintSpeed = 15f;
+    [SerializeField] private float Gravity = -15f; // The real gravity is 9.81 m/s², but we can exaggerate it for gameplay purposes
 
-    private float xRotation = 0f;
+    private float _lookRotation = 0f;
+    private Vector3 _velocity = Vector3.zero;
 
     private CharacterController _cc;
     private InputReader _inputReader;
@@ -40,9 +42,9 @@ public class PlayerController : MonoBehaviour
         Vector2 lookInput = _inputReader.LookInput * Sensitivity;
 
         // Update the vertical rotation (x-axis)
-        xRotation -= lookInput.y;
-        xRotation = Mathf.Clamp(xRotation, -MaxVerticalAngle, MaxVerticalAngle);
-        Camera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        _lookRotation -= lookInput.y;
+        _lookRotation = Mathf.Clamp(_lookRotation, -MaxVerticalAngle, MaxVerticalAngle);
+        Camera.localRotation = Quaternion.Euler(_lookRotation, 0f, 0f);
 
         // Update the horizontal rotation (y-axis)
         transform.Rotate(Vector3.up * lookInput.x);
@@ -53,9 +55,18 @@ public class PlayerController : MonoBehaviour
         Vector2 moveInput = _inputReader.MoveInput;
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
 
+        // Handle sprinting
         bool isSprinting = _inputReader.SprintInput;
         float speed = isSprinting ? SprintSpeed : Speed;
 
+        // Apply gravity
+        if (_cc.isGrounded && _velocity.y < 0)
+        {
+            _velocity.y = -2f; // Small negative value to keep the player grounded
+        }
+        _velocity.y += Gravity * Time.deltaTime;
+
+        move += new Vector3(0, _velocity.y, 0);
         _cc.Move(speed * Time.deltaTime * move);
     }
 }
