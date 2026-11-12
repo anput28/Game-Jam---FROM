@@ -5,7 +5,7 @@ public class InputReader : MonoBehaviour, InputSystem.IPlayerActions
 {
     public Vector2 LookInput { get; private set; }
     public Vector2 MoveInput { get; private set; }
-    public bool SprintInput { get; private set; }
+    public bool IsSprinting { get; private set; }
 
     private InputSystem _inputSystem;
 
@@ -61,7 +61,7 @@ public class InputReader : MonoBehaviour, InputSystem.IPlayerActions
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        SprintInput = context.ReadValueAsButton();
+        IsSprinting = context.ReadValueAsButton();
     }
     #endregion
 }
