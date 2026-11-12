@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8232770211807019145}
   - component: {fileID: 5182362389510867871}
   - component: {fileID: 4319868262885484083}
+  - component: {fileID: 7614709622615087004}
   m_Layer: 6
   m_Name: Portal
   m_TagString: Untagged
@@ -106,9 +107,28 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7614709622615087004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4176635997376947382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2164db53f51c030469d15d0fcb4122d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Portal
+  SpawnArea: {fileID: 7640386973352084225, guid: acd45d31a56c861469112e606a3875b6, type: 3}
+  MaxRetries: 5
+  CheckRadius: 100
+  ObstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
+  OffsetFromGround: 0
