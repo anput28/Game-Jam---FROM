@@ -22,8 +22,10 @@ public class PlayerController : MonoBehaviour
 
     private float _lookRotation = 0f;
     private Vector3 _velocity = Vector3.zero;
+
     private float _sprintTimeElapsed = 0f;
     private float _sprintRechargeTimeElapsed = 0f;
+    private bool _isExhausted = false;
 
     private CharacterController _cc;
     private InputReader _inputReader;
@@ -76,38 +78,56 @@ public class PlayerController : MonoBehaviour
 
     private float CalculateSpeed()
     {
-        if (_inputReader.IsSprinting)
+        UpdateStamina();
+        return CanSprint() ? SprintSpeed : Speed;
+    }
+
+    private bool CanSprint()
+    {
+        return _inputReader.IsSprinting && !_isExhausted;
+    }
+
+    private void UpdateStamina()
+    {
+        float dt = Time.deltaTime;
+
+        if (CanSprint())
         {
-            // Check if there is still sprint time left
-            if (_sprintTimeElapsed <= SprintDuration)
+            _sprintTimeElapsed += dt;
+
+            // Handle exhaustion
+            if (_sprintTimeElapsed >= SprintDuration)
             {
-                _sprintTimeElapsed += Time.deltaTime;
-                UpdateSprintUI();
-
-                // Decrease the recharge time elapsed while sprinting
-                if (_sprintRechargeTimeElapsed > 0)
-                {
-                    _sprintRechargeTimeElapsed -= Time.deltaTime;
-                }
-                return SprintSpeed;
+                _sprintTimeElapsed = SprintDuration;
+                _isExhausted = true;
             }
-        }
 
-        // Start to recharge sprint time
-        bool isRecharging = _sprintTimeElapsed > 0 && _sprintRechargeTimeElapsed <= RechargeTimeAfterSprint;
-        if (isRecharging)
+            // Decrease the recharge time elapsed while sprinting
+            _sprintRechargeTimeElapsed = Mathf.Max(0f, _sprintRechargeTimeElapsed - dt);
+        }
+        else if (_sprintTimeElapsed > 0)
         {
-            _sprintRechargeTimeElapsed += Time.deltaTime;
+            _sprintRechargeTimeElapsed += dt;
+            if (_sprintRechargeTimeElapsed >= RechargeTimeAfterSprint)
+            {
+                _sprintRechargeTimeElapsed = RechargeTimeAfterSprint;
+                _isExhausted = false;
+            }
 
             // Decrease the sprint time elapsed while recharging
-            if (_sprintTimeElapsed > 0)
-            {
-                _sprintTimeElapsed -= Time.deltaTime;
-                UpdateSprintUI();
-            }
+            _sprintTimeElapsed = Mathf.Max(0f, _sprintTimeElapsed - dt);
         }
 
-        return Speed;
+        UpdateSprintUI();
+    }
+
+    private void UpdateSprintUI()
+    {
+        if (SprintImage != null)
+        {
+            float fillAmount = _sprintTimeElapsed / SprintDuration;
+            SprintImage.fillAmount = Mathf.Clamp01(fillAmount);
+        }
     }
 
     private Vector3 ApplyGravity(Vector3 motion)
@@ -121,12 +141,4 @@ public class PlayerController : MonoBehaviour
         return motion;
     }
 
-    private void UpdateSprintUI()
-    {
-        if (SprintImage != null)
-        {
-            float fillAmount = _sprintTimeElapsed / SprintDuration;
-            SprintImage.fillAmount = Mathf.Clamp01(fillAmount);
-        }
-    }
 }
