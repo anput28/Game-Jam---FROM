@@ -84,13 +84,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75f0263fc2ba6747b0c829d5b1434e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  Camera: {fileID: 1907855314323143226}
-  Sensitivity: 0.1
+  CameraTransform: {fileID: 1907855314323143226}
+  MouseSensitivity: 0.1
+  GamePadSensitivity: 150
   MaxVerticalAngle: 85
   Speed: 15
   SprintSpeed: 25
   SprintDuration: 5
-  RechargeTimeAfterSprint: 5
   Gravity: -15
   SprintImage: {fileID: 0}
 --- !u!1 &3902442059611857893

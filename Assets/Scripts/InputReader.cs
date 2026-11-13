@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class InputReader : MonoBehaviour, InputSystem.IPlayerActions
 {
     public Vector2 LookInput { get; private set; }
+    public bool IsLookFromGamepad { get; private set; }
     public Vector2 MoveInput { get; private set; }
     public bool IsSprinting { get; private set; }
 
@@ -52,6 +53,11 @@ public class InputReader : MonoBehaviour, InputSystem.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
         LookInput = context.ReadValue<Vector2>();
+
+        if (context.performed)
+        {
+            IsLookFromGamepad = context.control.device is Gamepad;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
